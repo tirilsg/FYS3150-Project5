@@ -1,0 +1,128 @@
+\documentclass[10pt, nofootinbib, twocolumn]{revtex4-1}
+\usepackage{amsmath}
+\usepackage{xparse}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{physics}
+\usepackage{enumitem}
+\usepackage{natbib}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{caption}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,  
+    citecolor=black,
+    urlcolor=blue
+}
+
+\begin{document}
+\vspace*{5\baselineskip}
+\title{The Two-Dimensional Time-Dependent Schrodinger Equation \\ Wave-Particle Duality} 
+\author{Tiril Sørum}\homepage{https://github.com/tirilsg/FYS3150-Project5}
+\date{\today}        
+\begin{abstract}
+\vspace*{3\baselineskip}
+    \textit{The two-dimensional, time-dependent Schrodinger equation describing a wave-function is discretized in this report, and by utilizing \textit{the Crank-Nicolson Scheme}, we simulate how the behaviour of the wave-function evolves and changes with time. By creating different environments in which these wave-functions, modelling Gaussian wave-packets and thereby photons, interact with a wall containing an arbitrary amount of slits, we prove wave-particle duality. The correctness of our model is checked by first checking the standard deviation and relative error when modelling the wave packets in both an environment with no wall, and a wall containing double slits, we find relative errors on the minuscule scale of $10^{-15}$ in both cases. Subsequently, simulations of the behaviour when interacting with a wall containing single, double and triple slits are carried out, and we find patterns in the demeanor only explained by important properties of waves, such as interference, thereby proving the wave-particle duality. These discoveries are made by visualizing the data accumulated from these simulations in the forms of GIFs and probability-density plots. }
+\end{abstract}
+\maketitle       
+\vspace*{2\baselineskip}
+\section{Introduction}\label{sec:introduction}
+The discovery of wave-particle duality is a crucial concept in quantum mechanics, significantly improving our understanding of how quantum entities behave. This concept entails an explanation for the behaviour of quantum entities, by a possession of both particle and wave properties. \\
+
+Light is electromagnetic radiation, consisting of particles known as photons. An extremely important characteristic of the photon, is that it does in fact possess wave-particle duality, as we can model it as both a particle with quantized energy, or as energy packets \cite{kvante}. \textit{"If light can behave like a stream of particles, then perhaps it is not so surprising that electrons can behave like waves \cite{thermal}."}\\
+%\clearpage
+\newpage
+\vspace*{2\baselineskip}
+To investigate this statement, we implement a model predicting the behaviour of wave-packets within a restricted, defined environment, in which collision between these wave-packets and a wall occurs. This wall contains an arbitrary amount of slits, in which waves can pass through. Particles passing through slits in a wall like this, will exhibit a behaviour in which the particle interferes with itself \cite{kvante}. This is a pattern of behaviour that is directly observable, by simulating such an interaction, that we call the \textit{Double Slit Experiment}. \\
+
+To be able to describe the behaviour, and the interference pattern expected to occur, we need to introduce both wave-functionality, and thereby \textit{the Schrödinger equation}, which describes the behaviour of the wave function. \\
+
+By creating a model for this experiment, commonly undergone by making use of a double slit setup, which is what we do, and investigating the observed behaviour, we confirm and visualize these characteristics of wave-particle duality. Simulations are ran for both the behaviours for no slits, one slit, double slits and triple slits in the wall, and the results are presented in both Figures and GIFs presented in this report. We discuss the results in accordance with our theory, and find a striking conformity, proving the wave-particle duality.
+
+
+
+
+\clearpage
+\section{Theory}\label{sec:theory}
+\subsection{Expected Behaviours}\label{sec:behaviour}
+Waves behave in accordance with two extremely important properties of waves ; \textit{Huygens principle} and the \textit{superposition principle}.
+
+\subsubsection{Huygens Principle}
+\textit{Huygens principle} \cite{oscillations} states that \textit{"any point on a wave can be viewed as a source of a new wave, called the elementary wave, which expands in all directions."} In practice, this implies that each point along a wavefront can be seen as a secondary source of waves, contributing to the overall propagation of the wave. This principle is an important explanation as to the behaviour of waves when interacting with its environment. 
+
+\subsubsection{Superposition Principle}
+The \textit{superposition principle} \cite{oscillations}, states that \textit{"the response to two or more concurrent stimuli will at a given time and place be equal the sum of the response the system would have on each of the stimuli individually."}. When applied to waves, this principle implies that the combined effect of multiple waves at a given point in space and time, is the sum of their individual effects. When seen in light of Huygens principle, it is clear that the appearance of wave fronts will depend on the sum of every wavelet constructed along a wavefront. 
+
+
+\subsubsection{Interference}
+The phenomena which describes whether waves combine to reinforce of cancel each other, is commonly referred to as interference. When two waves coincide, the interference is constructive and the intensity in these regions increase as a consequence of the amplitudes of the wave functions adding up. When these amplitudes subtract, the interference is destructive and the intensity becomes lower. This is reason to distinct patterns forming where such waves cross paths. 
+
+
+\newpage
+\subsection{The Wave Function}
+The Schrödinger equation is used to describe the behaviour of wave functions and wave-packets, and predicts the future behaviour of a dynamic system, in form of probability for these behaviours to occur, and is dependent on both real and imaginary numbers. The most general form of this important equation, is time-dependent, and expressed by 
+\begin{equation}\label{eq:schrr}
+    i \hbar \frac{d}{dt} |\Psi(t)\rangle = \hat{H} |\Psi(t)\rangle
+\end{equation}
+where $\hbar$ is Planck's constant, t is time, $|\Psi(t)\rangle$ is in the shape of a vector and describes the quantum state of our system, and $\hat{H}$ is referred to as the \textit{Hamiltonian operator}. The  \textit{Hamiltonian operator} corresponds to the total energy within the system of interest, which due to its shape, keeps the energy real. For a system which is located in an environment affected by a potential $V$, and is not affected by an external magnetic field, $\hat{H}$ becomes \cite{griffiths}
+\begin{equation}\label{eq:hamiltonian}
+    \hat{H}=-\frac{\hbar^2}{2m}\nabla^2 +V_0
+\end{equation}
+where m is the mass of the respective particle with a condition modelled by the operator, $V_0$ is the  potential. $\nabla^2$ is the \textit{Laplace operator}, and has the shape of 
+\begin{equation}\label{eq:laplace}
+    \nabla^2= \frac{\partial^2}{\partial x^2}+ \frac{\partial^2}{\partial y^2}+ \frac{\partial^2}{\partial z^2}
+\end{equation}
+By making use of these Equations \eqref{eq:hamiltonian} and \eqref{eq:laplace}, the time-dependent Schrödinger Equation \eqref{eq:schrr} becomes
+\begin{equation}\label{eq:schrlar}
+    i \hbar \frac{d}{dt} |\Psi(t)\rangle = (-\frac{\hbar^2}{2m}(\frac{\partial^2}{\partial x^2}+ \frac{\partial^2}{\partial y^2}) +V_0) |\Psi(t)\rangle
+\end{equation}
+$|\Psi(t)\rangle$ is commonly referred to as the \textit{wave function}, and can be expressed $\Psi(x,y,t)$. \\
+
+\textit{The Born rule} conveys the probability of finding a system in a certain condition - a certain position in the pertinent space at a certain time. Thereby, this postulate of quantum mechanics can be referred to as the probability density \cite{thermal} - or distribution, expressed by the Equation \eqref{eq:problar}
+\begin{equation}\label{eq:problar}
+    p(x,y\,;t) = |\Psi(x,y,t)|^2 = \Psi^*(x,y,t) \, \Psi(x,y,t)
+\end{equation}
+which is a positive, real number as a consequence of our expression, relying on both the wave function and its complex conjugate. \\
+
+
+
+\newpage
+\section{Methods}\label{sec:methods} 
+\subsection{The Wave Function}
+In the specific context of efficient simulation using these complex equations, an assumption of scaling dimensional variables away successfully is made. As a consequence of this assumption, the expressions for the Schrödinger Equation \eqref{eq:schrr} and the associated probability distribution Equation \eqref{eq:problar} becomes 
+\begin{equation}\label{eq:schr}
+    i \frac{\partial u}{\partial t} = -\frac{\partial^2 u}{\partial x^2} - \frac{\partial^2 u}{\partial y^2} + v(x,y) u.
+\end{equation}
+\begin{equation}\label{eq:prob}
+    p(x,y;t) = |u(x,y,t)|^2 = u^*(x,y,t) \, u(x,y,t)
+\end{equation}
+where $u(x,y,t)$ is the wave function and describes position in time and space, and $v(x,y)$ describes the potential in which the system remains. These expressions are only possible to deduce, on the assumption that $u(x,y,t)$ has been normalised \cite{griffiths} - the following condition is reached
+\begin{equation}\label{eq:norm}
+    \int_{\infty}^{\infty}{u^*(x,y,t) \, u(x,y,t)} \, = \, 1
+\end{equation}
+By implementing these dimensionless equations Equation \eqref{eq:schr} and Equation \eqref{eq:prob}, a wave function and boundary conditions that are subsequently simple can be derived for the system. 
+
+\subsection{Boundary Conditions}
+The lack of dimensions leaves a description of the two dimensional xy-space in as intervals $x\epsilon[0,1]$, $y\epsilon[0,1]$. We know that as these boundaries in the xy-plane are approached, the wave function approaches 0, and thereby
+\begin{align}\label{eq:dirich}
+    \begin{split}
+        u(x=0,y,t)=0 \\
+        u(x=1,y,t)=0 \\
+        u(x,y=0,t)=0 \\
+        u(x,y=1,t)=0 \\
+    \end{split}
+\end{align}
+This way, one manages to avoid a large scale operation as $x,y \longrightarrow \infty$, as boundaries are applied to the wave function. These boundary conditions expressed by Equation \eqref{eq:dirich} is normally referred to as Dirichlet conditions \cite[p. ~333]{notes} for a square lattice with initial condition, for an unnormalised Gaussian wave packet
+\begin{equation}\label{eq:init}
+    u(x,y,t=0) = e^{-\frac{(x-x_c)^2}{2 \sigma_x^2} - \frac{(y-y_c)^2}{2 \sigma_y^2} + i p_x x + i p_y y}
+\end{equation}
+where $\sigma_x$ and $\sigma_y$ refers to the initial standard deviation in both dimensions, $p_x$ and $p_y$ are the initial momentum of the wave packet in the respective directions - which can be derived from our Hamiltonian operator's expression of kinetic energy, and $x_c$ and $y_c$ are the initial coordinates of the centre of the wave packet in the two dimensional space. The expression for the wave function of a Gaussian wave packet
+
+
+%\bibliography{references.bib}{}
+%\bibliographystyle{plain}
+
+
+\end{document}
