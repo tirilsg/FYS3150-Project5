@@ -50,7 +50,7 @@ g++ simulation.cpp src/*.cpp -I include -o simulation -O2 -llapack -lblas -larma
 When ran, the simulations produce sets of data, which can be imported and visualized by running the python programs with the similar names, stored in the map 'python' in our repository: 
 
 ### `diffraction_plots.py`:
-Imports the data created by `simulation.cpp`, and creates a plot visualizing the difference in deviation in probaibility from 1 for simulation1 and simulation2, as well as probability distribution along the y-axis at x=0.8 for simulation3, simulation4 and simulation5 and snapshots showcasing the probability density for simulatiion3 at t=0, t=0.001 and t=0.002.
+Imports the data created by `simulation.cpp`, and creates a plot visualizing the difference in deviation in probaibility from 1 for simulation1 and simulation2, as well as probability distribution along the y-axis at x=0.8 for simulation3, simulation4 and simulation5 and snapshots showcasing the probability density for simulatiion3 at t=0, t=0.001 and t=0.002. A 3D plot is also constructed for the instance of t=0.002 for the probability density of simulation3.
 
 ### diffraction_animations.py`:
 Imports the data created by `simulation.cpp`, and creates an animation visualizing how the probability density changes with time for the instance of each simulation, and saves the animation as a GIF. 
